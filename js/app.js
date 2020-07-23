@@ -1,33 +1,72 @@
 //constructor para seguro
-function Seguro(marca, anio, tipo){
+function Seguro(marca, anio, tipo) {
     this.marca = marca;
     this.anio = anio;
     this.tipo = tipo;
 }
 
-// Todo lo que voy a mostrar al usuario
-function Interfaz() {}
+Seguro.prototype.cotizarSeguro = function () {
 
-Interfaz.prototype.mostrarMensaje = function(mensaje, tipo) {
+    /* 1 = Americano 1.15
+       2 = Asiatico 1.05
+       3 = Europeo 1.35
+    */
+    let precioTotal;
+    const precioBase = 5000;
+
+    switch (this.marca) {
+        case '1':
+            precioTotal = precioBase * 1.15;
+            break;
+        case '2':
+            precioTotal = precioBase * 1.05;
+            break;
+        case '3':
+            precioTotal = precioBase * 1.35;
+            break;
+    }
+
+    //calculo la cantidad de años que tiene el auto
+    const diferencia = new Date().getFullYear() - this.anio;
+    
+    //cada año de diferencia se va a reducir un 3% el precio del seguro
+    precioTotal -= ((diferencia * 3) * precioTotal)/100;
+
+    /* si el seguro es basico se multiplica por un 30% mas
+       si el seguro es completo por un 50% mas 
+     */
+    if(this.tipo === 'basico'){
+        precioTotal = precioTotal * 1.30;
+    } else {
+        precioTotal = precioTotal * 1.50;
+    }
+    
+    return precioTotal;
+}
+
+// Todo lo que voy a mostrar al usuario
+function Interfaz() { }
+
+Interfaz.prototype.mostrarMensaje = function (mensaje, tipo) {
     const div = document.createElement('div');
 
-    if(tipo === 'error') {
-         div.classList.add('mensaje','error');
+    if (tipo === 'error') {
+        div.classList.add('mensaje', 'error');
     } else {
-         div.classList.add('mensaje','correcto');
+        div.classList.add('mensaje', 'correcto');
     }
     div.innerHTML = `${mensaje}`;
     formulario.insertBefore(div, document.querySelector('.form-group'));
 
-    setTimeout(function(){
+    setTimeout(function () {
         document.querySelector('.mensaje').remove();
     }, 3000);
 }
 
 const formulario = document.getElementById('cotizar-seguro');
-formulario.addEventListener('submit', function(e){
+formulario.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     //Leer la marca seleccionada por el usuario
     const marca = document.getElementById('marca');
     const marcaSeleccionada = marca.options[marca.selectedIndex].value;
@@ -43,23 +82,25 @@ formulario.addEventListener('submit', function(e){
     const interfaz = new Interfaz();
 
     //Revisando que los campos no estan vacios
-    if(marcaSeleccionada === '' || anioSeleccionado === '' || tipoSeguro === '') {
+    if (marcaSeleccionada === '' || anioSeleccionado === '' || tipoSeguro === '') {
 
         interfaz.mostrarMensaje('Faltan datos, revisar el formulario y prueba de nuevo', 'error');
     } else {
 
-        console.log('Todo correcto para cotizar!');
+        const seguro = new Seguro(marcaSeleccionada, anioSeleccionado, tipoSeguro);
+        const precio = seguro.cotizarSeguro();
+        console.log(precio);
     }
 })
 // Se imprimen las opciones de año del vehiculo, el cual no podra superar los 20 años de antigüedad.
 const max = new Date().getFullYear(),
-      min = max - 20;
+    min = max - 20;
 
 const selectAnios = document.getElementById('anio');
 
-for(let i = max; i >= min; i--){
+for (let i = max; i >= min; i--) {
     let option = document.createElement('option');
     option.value = i;
     option.innerHTML = i;
-    selectAnios.appendChild(option); 
+    selectAnios.appendChild(option);
 }
