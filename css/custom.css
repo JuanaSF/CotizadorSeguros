@@ -15,10 +15,12 @@ header {
     text-transform: uppercase;
     font-weight: bold;
     color: white;
+    text-align: center;
 }
 header h1 {
     font-size: 22px;
     margin:0;
+    
 }
 .error {
     background-color: #FBE9E7;
