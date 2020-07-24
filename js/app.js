@@ -1,3 +1,5 @@
+//------------ VERSION CON PROTOTYPES -----------------------
+
 //constructor para seguro
 function Seguro(marca, anio, tipo) {
     this.marca = marca;
