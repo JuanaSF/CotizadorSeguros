@@ -63,6 +63,41 @@ Interfaz.prototype.mostrarMensaje = function (mensaje, tipo) {
     }, 3000);
 }
 
+Interfaz.prototype.mostrarResultado = function (seguro, precio){
+
+    const resultado = document.getElementById('resultado');
+    let marca;
+    switch(seguro.marca){
+        case '1':
+            marca = 'Americano';
+            break;
+        case '2':
+            marca = 'Asiatico';
+            break;
+        case '3': 
+            marca = 'Europeo';
+            break;
+    }
+
+    const div = document.createElement('div');
+
+    div.innerHTML = `
+            <p class='header'> Tu Resumen: </p>
+            Marca: ${marca} <br>
+            Año: ${seguro.anio} <br>
+            Tipo: ${seguro.tipo} <br>
+            Total: $ ${precio}
+            `;
+    
+    const spinner = document.querySelector('#cargando img');
+    spinner.style.display = 'block';
+    setTimeout(function(){
+        spinner.style.display = 'none';
+        resultado.appendChild(div);
+    }, 3000)
+    
+}
+
 const formulario = document.getElementById('cotizar-seguro');
 formulario.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -86,10 +121,16 @@ formulario.addEventListener('submit', function (e) {
 
         interfaz.mostrarMensaje('Faltan datos, revisar el formulario y prueba de nuevo', 'error');
     } else {
+        const resultados = document.querySelector('#resultado div');
+
+        if(resultados != null){
+            resultados.remove();
+        }
 
         const seguro = new Seguro(marcaSeleccionada, anioSeleccionado, tipoSeguro);
         const precio = seguro.cotizarSeguro();
-        console.log(precio);
+        interfaz.mostrarResultado(seguro, precio);
+        interfaz.mostrarMensaje('cotizando...','correcto');
     }
 })
 // Se imprimen las opciones de año del vehiculo, el cual no podra superar los 20 años de antigüedad.
