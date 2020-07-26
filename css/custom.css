@@ -43,8 +43,8 @@ header h1 {
     margin:0;
 }
 #contenido {
-    /* margin-top: 60px; */
-    margin: 60px 20px 10px 20px;
+    margin-top: 60px;
+    /* margin: 60px 20px 10px 20px; */
     background-color: rgb(255, 255, 255);
     -webkit-box-shadow: 0px 21px 46px -15px rgba(0,0,0,1);
     -moz-box-shadow: 0px 21px 46px -15px rgba(0,0,0,1);
@@ -79,7 +79,4 @@ header h1 {
     padding: 10px;
     text-transform: uppercase;
     font-weight: bold;
-}
-.form-group {
-    padding: 5px;;
 }
